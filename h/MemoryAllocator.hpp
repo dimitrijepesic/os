@@ -43,5 +43,4 @@ private:
     static void tryCoalesce(memBlock* blk);
 };
 
-
 #endif //PROJECT_BASE_V1_1_MEMORYALLOCATOR_HPP
