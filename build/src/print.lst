@@ -1,0 +1,463 @@
+GAS LISTING /tmp/ccuTMHBs.s 			page 1
+
+
+   1              		.file	"print.cpp"
+   2              		.option nopic
+   3              		.option norelax
+   4              		.attribute arch, "rv64i2p0_m2p0_a2p0"
+   5              		.attribute unaligned_access, 0
+   6              		.attribute stack_align, 16
+   7              		.text
+   8              	.Ltext0:
+   9              		.align	2
+  10              		.globl	_Z11printStringPKc
+  12              	_Z11printStringPKc:
+  13              	.LFB9:
+  14              		.file 1 "src/print.cpp"
+   1:src/print.cpp **** //
+   2:src/print.cpp **** // Created by os on 9/26/25.
+   3:src/print.cpp **** //
+   4:src/print.cpp **** 
+   5:src/print.cpp **** // src/print.cpp
+   6:src/print.cpp **** 
+   7:src/print.cpp **** #include "../h/print.hpp"
+   8:src/print.cpp **** #include "../h/_semaphore.hpp"
+   9:src/print.cpp **** #include "../lib/console.h"
+  10:src/print.cpp **** 
+  11:src/print.cpp **** extern _sem* console_mutex;
+  12:src/print.cpp **** extern bool scheduler_started;
+  13:src/print.cpp **** 
+  14:src/print.cpp **** void printString(const char *string) {
+  15              		.loc 1 14 38
+  16              		.cfi_startproc
+  17              	.LVL0:
+  18 0000 130101FE 		addi	sp,sp,-32
+  19              		.cfi_def_cfa_offset 32
+  20 0004 233C1100 		sd	ra,24(sp)
+  21 0008 23388100 		sd	s0,16(sp)
+  22 000c 23349100 		sd	s1,8(sp)
+  23              		.cfi_offset 1, -8
+  24              		.cfi_offset 8, -16
+  25              		.cfi_offset 9, -24
+  26 0010 13040102 		addi	s0,sp,32
+  27              		.cfi_def_cfa 8, 0
+  28 0014 93040500 		mv	s1,a0
+  15:src/print.cpp ****     if (scheduler_started && console_mutex) {
+  29              		.loc 1 15 5
+  30 0018 97070000 		lbu	a5,scheduler_started
+  30      83C70700 
+  31 0020 638C0700 		beqz	a5,.L4
+  32              		.loc 1 15 30 is_stmt 0 discriminator 1
+  33 0024 17050000 		ld	a0,console_mutex
+  33      03350500 
+  34              	.LVL1:
+  35              		.loc 1 15 27 discriminator 1
+  36 002c 63060500 		beqz	a0,.L4
+  16:src/print.cpp ****         console_mutex->wait();
+  37              		.loc 1 16 9 is_stmt 1
+  38              		.loc 1 16 28 is_stmt 0
+  39 0030 97000000 		call	_ZN4_sem4waitEv
+  39      E7800000 
+GAS LISTING /tmp/ccuTMHBs.s 			page 2
+
+
+  40              	.LVL2:
+  41              	.L4:
+  17:src/print.cpp ****     }
+  18:src/print.cpp ****     while (*string != '\0') {
+  42              		.loc 1 18 5 is_stmt 1
+  43              		.loc 1 18 20
+  44              		.loc 1 18 12 is_stmt 0
+  45 0038 03C50400 		lbu	a0,0(s1)
+  46              		.loc 1 18 20
+  47 003c 630A0500 		beqz	a0,.L3
+  19:src/print.cpp ****         __putc(*string);
+  48              		.loc 1 19 9 is_stmt 1
+  49              		.loc 1 19 15 is_stmt 0
+  50 0040 97000000 		call	__putc
+  50      E7800000 
+  51              	.LVL3:
+  20:src/print.cpp ****         string++;
+  52              		.loc 1 20 9 is_stmt 1
+  53              		.loc 1 20 15 is_stmt 0
+  54 0048 93841400 		addi	s1,s1,1
+  55              	.LVL4:
+  18:src/print.cpp ****         __putc(*string);
+  56              		.loc 1 18 5
+  57 004c 6FF0DFFE 		j	.L4
+  58              	.L3:
+  21:src/print.cpp ****     }
+  22:src/print.cpp ****     if (scheduler_started && console_mutex) {
+  59              		.loc 1 22 5 is_stmt 1
+  60 0050 97070000 		lbu	a5,scheduler_started
+  60      83C70700 
+  61 0058 638C0700 		beqz	a5,.L1
+  62              		.loc 1 22 30 is_stmt 0 discriminator 1
+  63 005c 17050000 		ld	a0,console_mutex
+  63      03350500 
+  64              		.loc 1 22 27 discriminator 1
+  65 0064 63060500 		beqz	a0,.L1
+  23:src/print.cpp ****         console_mutex->signal();
+  66              		.loc 1 23 9 is_stmt 1
+  67              		.loc 1 23 30 is_stmt 0
+  68 0068 97000000 		call	_ZN4_sem6signalEv
+  68      E7800000 
+  69              	.LVL5:
+  70              	.L1:
+  24:src/print.cpp ****     }
+  25:src/print.cpp **** }
+  71              		.loc 1 25 1
+  72 0070 83308101 		ld	ra,24(sp)
+  73              		.cfi_restore 1
+  74 0074 03340101 		ld	s0,16(sp)
+  75              		.cfi_restore 8
+  76              		.cfi_def_cfa 2, 32
+  77 0078 83348100 		ld	s1,8(sp)
+  78              		.cfi_restore 9
+  79              	.LVL6:
+  80 007c 13010102 		addi	sp,sp,32
+  81              		.cfi_def_cfa_offset 0
+  82 0080 67800000 		jr	ra
+GAS LISTING /tmp/ccuTMHBs.s 			page 3
+
+
+  83              		.cfi_endproc
+  84              	.LFE9:
+  86              		.align	2
+  87              		.globl	_Z12printIntegerm
+  89              	_Z12printIntegerm:
+  90              	.LFB10:
+  26:src/print.cpp **** 
+  27:src/print.cpp **** void printInteger(uint64 integer) {
+  91              		.loc 1 27 35 is_stmt 1
+  92              		.cfi_startproc
+  93              	.LVL7:
+  94 0084 130101FD 		addi	sp,sp,-48
+  95              		.cfi_def_cfa_offset 48
+  96 0088 23341102 		sd	ra,40(sp)
+  97 008c 23308102 		sd	s0,32(sp)
+  98              		.cfi_offset 1, -8
+  99              		.cfi_offset 8, -16
+ 100 0090 13040103 		addi	s0,sp,48
+ 101              		.cfi_def_cfa 8, 0
+  28:src/print.cpp ****     static char digits[] = "0123456789";
+ 102              		.loc 1 28 5
+  29:src/print.cpp ****     char buf[21];
+ 103              		.loc 1 29 5
+  30:src/print.cpp ****     int i = sizeof(buf) - 1;
+ 104              		.loc 1 30 5
+ 105              	.LVL8:
+  31:src/print.cpp ****     buf[i] = '\0';
+ 106              		.loc 1 31 5
+ 107              		.loc 1 31 12 is_stmt 0
+ 108 0094 230604FE 		sb	zero,-20(s0)
+  32:src/print.cpp **** 
+  33:src/print.cpp ****     if (integer == 0) {
+ 109              		.loc 1 33 5 is_stmt 1
+ 110 0098 63180502 		bnez	a0,.L10
+  34:src/print.cpp ****         buf[--i] = '0';
+ 111              		.loc 1 34 9
+ 112              	.LVL9:
+ 113              		.loc 1 34 18 is_stmt 0
+ 114 009c 93070003 		li	a5,48
+ 115 00a0 A305F4FE 		sb	a5,-21(s0)
+ 116 00a4 13073001 		li	a4,19
+ 117              	.LVL10:
+ 118              	.L9:
+  35:src/print.cpp ****     } else {
+  36:src/print.cpp ****         do {
+  37:src/print.cpp ****             buf[--i] = digits[integer % 10];
+  38:src/print.cpp ****             integer /= 10;
+  39:src/print.cpp ****         } while (integer != 0);
+  40:src/print.cpp ****     }
+  41:src/print.cpp **** 
+  42:src/print.cpp ****     // Pozivamo printString koji će se pobrinuti za zaključavanje.
+  43:src/print.cpp ****     // Nema __putc, wait, ili signal poziva ovde!
+  44:src/print.cpp ****     printString(&buf[i]);
+ 119              		.loc 1 44 5 is_stmt 1
+ 120              		.loc 1 44 16 is_stmt 0
+ 121 00a8 930784FD 		addi	a5,s0,-40
+ 122 00ac 3385E700 		add	a0,a5,a4
+GAS LISTING /tmp/ccuTMHBs.s 			page 4
+
+
+ 123              	.LVL11:
+ 124 00b0 97000000 		call	_Z11printStringPKc
+ 124      E7800000 
+ 125              	.LVL12:
+  45:src/print.cpp **** }...
+ 126              		.loc 1 45 1
+ 127 00b8 83308102 		ld	ra,40(sp)
+ 128              		.cfi_remember_state
+ 129              		.cfi_restore 1
+ 130 00bc 03340102 		ld	s0,32(sp)
+ 131              		.cfi_restore 8
+ 132              		.cfi_def_cfa 2, 48
+ 133 00c0 13010103 		addi	sp,sp,48
+ 134              		.cfi_def_cfa_offset 0
+ 135 00c4 67800000 		jr	ra
+ 136              	.LVL13:
+ 137              	.L10:
+ 138              		.cfi_restore_state
+  30:src/print.cpp ****     int i = sizeof(buf) - 1;
+ 139              		.loc 1 30 9
+ 140 00c8 13074001 		li	a4,20
+ 141              	.LVL14:
+ 142              	.L8:
+  36:src/print.cpp ****         do {
+ 143              		.loc 1 36 9 is_stmt 1
+  37:src/print.cpp ****             buf[--i] = digits[integer % 10];
+ 144              		.loc 1 37 13
+  37:src/print.cpp ****             buf[--i] = digits[integer % 10];
+ 145              		.loc 1 37 39 is_stmt 0
+ 146 00cc 9306A000 		li	a3,10
+ 147 00d0 3376D502 		remu	a2,a0,a3
+  37:src/print.cpp ****             buf[--i] = digits[integer % 10];
+ 148              		.loc 1 37 22
+ 149 00d4 1B07F7FF 		addiw	a4,a4,-1
+ 150              	.LVL15:
+  37:src/print.cpp ****             buf[--i] = digits[integer % 10];
+ 151              		.loc 1 37 43
+ 152 00d8 97070000 		lla	a5,.LANCHOR0
+ 152      93870700 
+ 153 00e0 B387C700 		add	a5,a5,a2
+ 154 00e4 03C60700 		lbu	a2,0(a5)
+  37:src/print.cpp ****             buf[--i] = digits[integer % 10];
+ 155              		.loc 1 37 22
+ 156 00e8 930704FF 		addi	a5,s0,-16
+ 157 00ec B387E700 		add	a5,a5,a4
+ 158 00f0 2384C7FE 		sb	a2,-24(a5)
+  38:src/print.cpp ****             integer /= 10;
+ 159              		.loc 1 38 13 is_stmt 1
+ 160 00f4 13060500 		mv	a2,a0
+  38:src/print.cpp ****             integer /= 10;
+ 161              		.loc 1 38 21 is_stmt 0
+ 162 00f8 3355D502 		divu	a0,a0,a3
+ 163              	.LVL16:
+  39:src/print.cpp ****         } while (integer != 0);
+ 164              		.loc 1 39 26 is_stmt 1
+ 165 00fc 93079000 		li	a5,9
+ 166 0100 E3E6C7FC 		bgtu	a2,a5,.L8
+GAS LISTING /tmp/ccuTMHBs.s 			page 5
+
+
+ 167 0104 6FF05FFA 		j	.L9
+ 168              		.cfi_endproc
+ 169              	.LFE10:
+ 171              		.section	.rodata
+ 172              		.align	3
+ 173              		.set	.LANCHOR0,. + 0
+ 176              	_ZZ12printIntegermE6digits:
+ 177 0000 30313233 		.string	"0123456789"
+ 177      34353637 
+ 177      383900
+ 178              		.text
+ 179              	.Letext0:
+ 180              		.file 2 "src/../h/../lib/hw.h"
+ 181              		.file 3 "src/../h/_semaphore.hpp"
+ 182              		.file 4 "src/../h/print.hpp"
+ 183              		.file 5 "src/../h/list.hpp"
+ 184              		.file 6 "src/../lib/console.h"
+GAS LISTING /tmp/ccuTMHBs.s 			page 6
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 print.cpp
+     /tmp/ccuTMHBs.s:12     .text:0000000000000000 _Z11printStringPKc
+     /tmp/ccuTMHBs.s:16     .text:0000000000000000 .L0 
+     /tmp/ccuTMHBs.s:18     .text:0000000000000000 .L0 
+     /tmp/ccuTMHBs.s:19     .text:0000000000000004 .L0 
+     /tmp/ccuTMHBs.s:23     .text:0000000000000010 .L0 
+     /tmp/ccuTMHBs.s:24     .text:0000000000000010 .L0 
+     /tmp/ccuTMHBs.s:25     .text:0000000000000010 .L0 
+     /tmp/ccuTMHBs.s:27     .text:0000000000000014 .L0 
+     /tmp/ccuTMHBs.s:30     .text:0000000000000018 .L0 
+     /tmp/ccuTMHBs.s:33     .text:0000000000000024 .L0 
+     /tmp/ccuTMHBs.s:36     .text:000000000000002c .L0 
+     /tmp/ccuTMHBs.s:38     .text:0000000000000030 .L0 
+     /tmp/ccuTMHBs.s:39     .text:0000000000000030 .L0 
+     /tmp/ccuTMHBs.s:43     .text:0000000000000038 .L0 
+     /tmp/ccuTMHBs.s:44     .text:0000000000000038 .L0 
+     /tmp/ccuTMHBs.s:45     .text:0000000000000038 .L0 
+     /tmp/ccuTMHBs.s:47     .text:000000000000003c .L0 
+     /tmp/ccuTMHBs.s:49     .text:0000000000000040 .L0 
+     /tmp/ccuTMHBs.s:50     .text:0000000000000040 .L0 
+     /tmp/ccuTMHBs.s:53     .text:0000000000000048 .L0 
+     /tmp/ccuTMHBs.s:54     .text:0000000000000048 .L0 
+     /tmp/ccuTMHBs.s:57     .text:000000000000004c .L0 
+     /tmp/ccuTMHBs.s:60     .text:0000000000000050 .L0 
+     /tmp/ccuTMHBs.s:63     .text:000000000000005c .L0 
+     /tmp/ccuTMHBs.s:65     .text:0000000000000064 .L0 
+     /tmp/ccuTMHBs.s:67     .text:0000000000000068 .L0 
+     /tmp/ccuTMHBs.s:68     .text:0000000000000068 .L0 
+     /tmp/ccuTMHBs.s:72     .text:0000000000000070 .L0 
+     /tmp/ccuTMHBs.s:73     .text:0000000000000074 .L0 
+     /tmp/ccuTMHBs.s:75     .text:0000000000000078 .L0 
+     /tmp/ccuTMHBs.s:76     .text:0000000000000078 .L0 
+     /tmp/ccuTMHBs.s:78     .text:000000000000007c .L0 
+     /tmp/ccuTMHBs.s:81     .text:0000000000000080 .L0 
+     /tmp/ccuTMHBs.s:83     .text:0000000000000084 .L0 
+     /tmp/ccuTMHBs.s:89     .text:0000000000000084 _Z12printIntegerm
+     /tmp/ccuTMHBs.s:92     .text:0000000000000084 .L0 
+     /tmp/ccuTMHBs.s:94     .text:0000000000000084 .L0 
+     /tmp/ccuTMHBs.s:95     .text:0000000000000088 .L0 
+     /tmp/ccuTMHBs.s:98     .text:0000000000000090 .L0 
+     /tmp/ccuTMHBs.s:99     .text:0000000000000090 .L0 
+     /tmp/ccuTMHBs.s:101    .text:0000000000000094 .L0 
+     /tmp/ccuTMHBs.s:103    .text:0000000000000094 .L0 
+     /tmp/ccuTMHBs.s:104    .text:0000000000000094 .L0 
+     /tmp/ccuTMHBs.s:106    .text:0000000000000094 .L0 
+     /tmp/ccuTMHBs.s:107    .text:0000000000000094 .L0 
+     /tmp/ccuTMHBs.s:108    .text:0000000000000094 .L0 
+     /tmp/ccuTMHBs.s:110    .text:0000000000000098 .L0 
+     /tmp/ccuTMHBs.s:113    .text:000000000000009c .L0 
+     /tmp/ccuTMHBs.s:114    .text:000000000000009c .L0 
+     /tmp/ccuTMHBs.s:120    .text:00000000000000a8 .L0 
+     /tmp/ccuTMHBs.s:121    .text:00000000000000a8 .L0 
+     /tmp/ccuTMHBs.s:127    .text:00000000000000b8 .L0 
+     /tmp/ccuTMHBs.s:128    .text:00000000000000bc .L0 
+     /tmp/ccuTMHBs.s:129    .text:00000000000000bc .L0 
+     /tmp/ccuTMHBs.s:131    .text:00000000000000c0 .L0 
+GAS LISTING /tmp/ccuTMHBs.s 			page 7
+
+
+     /tmp/ccuTMHBs.s:132    .text:00000000000000c0 .L0 
+     /tmp/ccuTMHBs.s:134    .text:00000000000000c4 .L0 
+     /tmp/ccuTMHBs.s:138    .text:00000000000000c8 .L0 
+     /tmp/ccuTMHBs.s:140    .text:00000000000000c8 .L0 
+     /tmp/ccuTMHBs.s:144    .text:00000000000000cc .L0 
+     /tmp/ccuTMHBs.s:145    .text:00000000000000cc .L0 
+     /tmp/ccuTMHBs.s:146    .text:00000000000000cc .L0 
+     /tmp/ccuTMHBs.s:149    .text:00000000000000d4 .L0 
+     /tmp/ccuTMHBs.s:152    .text:00000000000000d8 .L0 
+     /tmp/ccuTMHBs.s:156    .text:00000000000000e8 .L0 
+     /tmp/ccuTMHBs.s:160    .text:00000000000000f4 .L0 
+     /tmp/ccuTMHBs.s:162    .text:00000000000000f8 .L0 
+     /tmp/ccuTMHBs.s:165    .text:00000000000000fc .L0 
+     /tmp/ccuTMHBs.s:168    .text:0000000000000108 .L0 
+     /tmp/ccuTMHBs.s:173    .rodata:0000000000000000 .LANCHOR0
+     /tmp/ccuTMHBs.s:176    .rodata:0000000000000000 _ZZ12printIntegermE6digits
+     /tmp/ccuTMHBs.s:185    .text:0000000000000108 .L0 
+     /tmp/ccuTMHBs.s:30     .text:0000000000000018 .L0 
+     /tmp/ccuTMHBs.s:33     .text:0000000000000024 .L0 
+     /tmp/ccuTMHBs.s:60     .text:0000000000000050 .L0 
+     /tmp/ccuTMHBs.s:63     .text:000000000000005c .L0 
+     /tmp/ccuTMHBs.s:152    .text:00000000000000d8 .L0 
+     /tmp/ccuTMHBs.s:41     .text:0000000000000038 .L4
+     /tmp/ccuTMHBs.s:58     .text:0000000000000050 .L3
+     /tmp/ccuTMHBs.s:70     .text:0000000000000070 .L1
+     /tmp/ccuTMHBs.s:137    .text:00000000000000c8 .L10
+     /tmp/ccuTMHBs.s:142    .text:00000000000000cc .L8
+     /tmp/ccuTMHBs.s:118    .text:00000000000000a8 .L9
+     /tmp/ccuTMHBs.s:741    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccuTMHBs.s:1426   .debug_str:0000000000000047 .LASF63
+     /tmp/ccuTMHBs.s:1448   .debug_str:0000000000000192 .LASF64
+     /tmp/ccuTMHBs.s:1522   .debug_str:000000000000036f .LASF65
+     /tmp/ccuTMHBs.s:8      .text:0000000000000000 .Ltext0
+     /tmp/ccuTMHBs.s:179    .text:0000000000000108 .Letext0
+     /tmp/ccuTMHBs.s:1414   .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccuTMHBs.s:1498   .debug_str:00000000000002cb .LASF0
+     /tmp/ccuTMHBs.s:1472   .debug_str:0000000000000247 .LASF1
+     /tmp/ccuTMHBs.s:1464   .debug_str:00000000000001f7 .LASF2
+     /tmp/ccuTMHBs.s:1434   .debug_str:000000000000012d .LASF4
+     /tmp/ccuTMHBs.s:1470   .debug_str:0000000000000235 .LASF3
+     /tmp/ccuTMHBs.s:1420   .debug_str:000000000000001a .LASF5
+     /tmp/ccuTMHBs.s:1416   .debug_str:0000000000000000 .LASF6
+     /tmp/ccuTMHBs.s:1454   .debug_str:00000000000001b2 .LASF7
+     /tmp/ccuTMHBs.s:1512   .debug_str:0000000000000317 .LASF8
+     /tmp/ccuTMHBs.s:1430   .debug_str:0000000000000112 .LASF9
+     /tmp/ccuTMHBs.s:1558   .debug_str:00000000000004a7 .LASF10
+     /tmp/ccuTMHBs.s:1458   .debug_str:00000000000001cb .LASF11
+     /tmp/ccuTMHBs.s:1548   .debug_str:000000000000045c .LASF12
+     /tmp/ccuTMHBs.s:1520   .debug_str:000000000000035f .LASF13
+     /tmp/ccuTMHBs.s:1476   .debug_str:0000000000000268 .LASF14
+     /tmp/ccuTMHBs.s:1444   .debug_str:0000000000000169 .LASF15
+     /tmp/ccuTMHBs.s:1516   .debug_str:0000000000000343 .LASF16
+     /tmp/ccuTMHBs.s:1508   .debug_str:0000000000000308 .LASF17
+     /tmp/ccuTMHBs.s:1432   .debug_str:0000000000000120 .LASF19
+     /tmp/ccuTMHBs.s:1518   .debug_str:0000000000000359 .LASF23
+     /tmp/ccuTMHBs.s:1480   .debug_str:0000000000000282 .LASF25
+     /tmp/ccuTMHBs.s:1496   .debug_str:00000000000002c6 .LASF18
+GAS LISTING /tmp/ccuTMHBs.s 			page 8
+
+
+     /tmp/ccuTMHBs.s:1550   .debug_str:000000000000046c .LASF20
+     /tmp/ccuTMHBs.s:1428   .debug_str:000000000000010b .LASF21
+     /tmp/ccuTMHBs.s:1530   .debug_str:00000000000003d8 .LASF22
+     /tmp/ccuTMHBs.s:1552   .debug_str:000000000000047c .LASF24
+     /tmp/ccuTMHBs.s:1492   .debug_str:00000000000002b4 .LASF26
+     /tmp/ccuTMHBs.s:1502   .debug_str:00000000000002ea .LASF28
+     /tmp/ccuTMHBs.s:1478   .debug_str:0000000000000274 .LASF30
+     /tmp/ccuTMHBs.s:1490   .debug_str:00000000000002ac .LASF27
+     /tmp/ccuTMHBs.s:1456   .debug_str:00000000000001c5 .LASF29
+     /tmp/ccuTMHBs.s:1526   .debug_str:00000000000003ad .LASF31
+     /tmp/ccuTMHBs.s:1486   .debug_str:000000000000029c .LASF66
+     /tmp/ccuTMHBs.s:1446   .debug_str:000000000000017f .LASF67
+     /tmp/ccuTMHBs.s:1474   .debug_str:000000000000025a .LASF32
+     /tmp/ccuTMHBs.s:1500   .debug_str:00000000000002d8 .LASF33
+     /tmp/ccuTMHBs.s:1438   .debug_str:000000000000014b .LASF34
+     /tmp/ccuTMHBs.s:1510   .debug_str:000000000000030d .LASF35
+     /tmp/ccuTMHBs.s:1482   .debug_str:000000000000028f .LASF68
+     /tmp/ccuTMHBs.s:1494   .debug_str:00000000000002c1 .LASF36
+     /tmp/ccuTMHBs.s:1540   .debug_str:0000000000000431 .LASF37
+     /tmp/ccuTMHBs.s:1544   .debug_str:0000000000000450 .LASF38
+     /tmp/ccuTMHBs.s:1468   .debug_str:0000000000000222 .LASF39
+     /tmp/ccuTMHBs.s:1436   .debug_str:0000000000000134 .LASF40
+     /tmp/ccuTMHBs.s:1460   .debug_str:00000000000001da .LASF69
+     /tmp/ccuTMHBs.s:1532   .debug_str:00000000000003ea .LASF70
+     /tmp/ccuTMHBs.s:1422   .debug_str:0000000000000021 .LASF41
+     /tmp/ccuTMHBs.s:1466   .debug_str:0000000000000205 .LASF42
+     /tmp/ccuTMHBs.s:1488   .debug_str:00000000000002a4 .LASF43
+     /tmp/ccuTMHBs.s:1514   .debug_str:0000000000000327 .LASF44
+     /tmp/ccuTMHBs.s:1440   .debug_str:0000000000000150 .LASF45
+     /tmp/ccuTMHBs.s:1534   .debug_str:0000000000000401 .LASF46
+     /tmp/ccuTMHBs.s:1536   .debug_str:000000000000041f .LASF47
+     /tmp/ccuTMHBs.s:1524   .debug_str:0000000000000392 .LASF48
+     /tmp/ccuTMHBs.s:1452   .debug_str:00000000000001a7 .LASF49
+     /tmp/ccuTMHBs.s:1424   .debug_str:000000000000002a .LASF50
+     /tmp/ccuTMHBs.s:1506   .debug_str:00000000000002ff .LASF51
+     /tmp/ccuTMHBs.s:1542   .debug_str:0000000000000436 .LASF52
+     /tmp/ccuTMHBs.s:1484   .debug_str:0000000000000294 .LASF53
+     /tmp/ccuTMHBs.s:1528   .debug_str:00000000000003be .LASF54
+     /tmp/ccuTMHBs.s:1442   .debug_str:000000000000015c .LASF55
+     /tmp/ccuTMHBs.s:1554   .debug_str:0000000000000489 .LASF56
+     /tmp/ccuTMHBs.s:90     .text:0000000000000084 .LFB10
+     /tmp/ccuTMHBs.s:169    .text:0000000000000108 .LFE10
+     /tmp/ccuTMHBs.s:1538   .debug_str:0000000000000429 .LASF61
+     /tmp/ccuTMHBs.s:1353   .debug_loc:0000000000000000 .LLST1
+     /tmp/ccuTMHBs.s:1418   .debug_str:0000000000000013 .LASF57
+     /tmp/ccuTMHBs.s:1364   .debug_loc:0000000000000036 .LLST2
+     /tmp/ccuTMHBs.s:125    .text:00000000000000b8 .LVL12
+     /tmp/ccuTMHBs.s:1504   .debug_str:00000000000002fa .LASF58
+     /tmp/ccuTMHBs.s:1556   .debug_str:000000000000049b .LASF59
+     /tmp/ccuTMHBs.s:1462   .debug_str:00000000000001e4 .LASF60
+     /tmp/ccuTMHBs.s:13     .text:0000000000000000 .LFB9
+     /tmp/ccuTMHBs.s:84     .text:0000000000000084 .LFE9
+     /tmp/ccuTMHBs.s:1450   .debug_str:00000000000001a0 .LASF62
+     /tmp/ccuTMHBs.s:1390   .debug_loc:00000000000000a8 .LLST0
+     /tmp/ccuTMHBs.s:40     .text:0000000000000038 .LVL2
+     /tmp/ccuTMHBs.s:51     .text:0000000000000048 .LVL3
+     /tmp/ccuTMHBs.s:69     .text:0000000000000070 .LVL5
+GAS LISTING /tmp/ccuTMHBs.s 			page 9
+
+
+     /tmp/ccuTMHBs.s:1546   .debug_str:0000000000000455 .LASF71
+     /tmp/ccuTMHBs.s:93     .text:0000000000000084 .LVL7
+     /tmp/ccuTMHBs.s:123    .text:00000000000000b0 .LVL11
+     /tmp/ccuTMHBs.s:136    .text:00000000000000c8 .LVL13
+     /tmp/ccuTMHBs.s:105    .text:0000000000000094 .LVL8
+     /tmp/ccuTMHBs.s:112    .text:000000000000009c .LVL9
+     /tmp/ccuTMHBs.s:117    .text:00000000000000a8 .LVL10
+     /tmp/ccuTMHBs.s:141    .text:00000000000000cc .LVL14
+     /tmp/ccuTMHBs.s:150    .text:00000000000000d8 .LVL15
+     /tmp/ccuTMHBs.s:17     .text:0000000000000000 .LVL0
+     /tmp/ccuTMHBs.s:34     .text:000000000000002c .LVL1
+     /tmp/ccuTMHBs.s:79     .text:000000000000007c .LVL6
+     /tmp/ccuTMHBs.s:186    .debug_info:0000000000000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+scheduler_started
+console_mutex
+_ZN4_sem4waitEv
+__putc
+_ZN4_sem6signalEv
