@@ -7,6 +7,7 @@
 
 int main()
 {
+    MemoryAllocator::init();
     TCB *threads[5];
 
     threads[0] = TCB::createThread(nullptr,nullptr);
