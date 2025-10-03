@@ -9,10 +9,9 @@
 
 class MemoryAllocator {
 public:
-
     static void init();
-    static void* mem_alloc (size_t size);
-    static int mem_free (void* p);
+    static void* mem_alloc(size_t size);
+    static int mem_free(void* p);
 
     static uint64 getFreeSpaceBytes();
     static uint64 getLargestFreeBlockBytes();
@@ -26,7 +25,6 @@ public:
     };
 
 private:
-
     static memBlock* freeHead;
     static uint64 heapStart;
     static uint64 heapEnd;
